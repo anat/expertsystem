@@ -7,7 +7,7 @@ class IDependence
 {
 public:
   virtual int getStatus() = 0;
-  virtual std::string const & getName() const = 0;
+  virtual std::string const & getName() const = 0; // A virer
 };
 
 #endif

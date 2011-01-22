@@ -1,4 +1,5 @@
 #include "Fact.hpp"
+#include "And.hpp"
 #include <iostream>
 
 int main()//int argc, char **argv)
@@ -11,8 +12,10 @@ int main()//int argc, char **argv)
 
   e->setStatus(ST_TRUE);
 
-  a->addDependencie(c);
-  a->addDependencie(b);
+  //a->addDependencie(c);
+  //a->addDependencie(b);
+  And *cb = new And(c, b);
+  a->addDependencie(cb);
 
   b->addDependencie(d);
   b->addDependencie(e);
