@@ -2,6 +2,7 @@
 # define FACT_HPP_
 
 # include "IDependence.hpp"
+# include "And.hpp"
 # include <iostream>
 # include <list>
 
