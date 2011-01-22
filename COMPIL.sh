@@ -1,1 +1,1 @@
-g++ -W -Wall main.cpp Fact.cpp And.cpp
+g++ -W -Wall src/main.cpp src/Fact.cpp src/And.cpp -I ./inc -o expsys

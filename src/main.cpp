@@ -4,6 +4,7 @@
 
 int main()//int argc, char **argv)
 {
+  /*
   Fact *a = new Fact("A");
   Fact *b = new Fact("B");
   Fact *c = new Fact("C");
@@ -20,7 +21,7 @@ int main()//int argc, char **argv)
   b->addDependencie(d);
   b->addDependencie(e);
 
-  c->addDependencie(b);
+  c->addDependencie(b);*/
 
   std::cout << "a.status = " << a->getStatus() << std::endl;
   return (0);
