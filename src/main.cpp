@@ -8,7 +8,7 @@ int main(int argc, char **argv)
   if (argc)// == 3)
     {
       Parser p(std::string("./RS_2.txt"), std::string("A"));
-      /*
+      
 	Fact *a = new Fact("A");
 	Fact *b = new Fact("B");
 	Fact *c = new Fact("C");
@@ -23,9 +23,9 @@ int main(int argc, char **argv)
 	b->addDependencie(d);
 	b->addDependencie(e);
 	
-	c->addDependencie(b);*/
+	c->addDependencie(b);
       
-      //std::cout << "a.status = " << a->getStatus() << std::endl;
+      std::cout << "a.status = " << a->getStatus() << std::endl;
       return (0);
     }
   std::cerr << "Usage " << argv[0] << ": rules fact_to_check" << std::endl;
