@@ -20,7 +20,7 @@ int Fact::getStatus()
     {
       while (it != ite)
 	{
-	  std::cout << _name << ": " << (*it)->getName() << std::endl;
+	  std::cout << _name.c_str() << ": " << (*it)->getName().c_str() << std::endl;
 	  if ((*it)->getStatus() == ST_TRUE)
 	    return ((_status = ST_TRUE));
 	  ++it;
