@@ -19,7 +19,7 @@ public:
   virtual std::string const & getName() const;
   virtual TStatus getStatus();
   void setStatus(TStatus status);
-  void addDependencie(IDependence *dependencie);
+  void addDependence(IDependence *dependence);
 };
 
 #endif

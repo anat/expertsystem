@@ -3,6 +3,7 @@
 Fact::Fact(std::string const & name)
 {
   _name = name;
+  std::cout << _name.c_str() << " a SPAWN !" << std::endl;
   _status = Status::UNDEF;
 }
 
@@ -34,7 +35,7 @@ void Fact::setStatus(TStatus status)
   _status = status;
 }
 
-void Fact::addDependencie(IDependence *dependencie)
+void Fact::addDependence(IDependence *dependence)
 {
-  _dependencies.push_back(dependencie);
+  _dependencies.push_back(dependence);
 }

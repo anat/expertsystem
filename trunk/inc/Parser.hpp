@@ -22,6 +22,7 @@ public:
   Parser(char** param, int count);
   void run();
   IDependence *getFactToCheck();
+  std::map<std::string, IDependence*> const & getRules();
 
 };
 
