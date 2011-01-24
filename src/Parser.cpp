@@ -1,4 +1,6 @@
 #include "Parser.hpp"
+#include "Fact.hpp"
+#include "IDependence.hpp"
 #include <iostream>
 #include <sstream>
 #include <list>
@@ -20,7 +22,7 @@ void Parser::run()
 		std::string line;
 		while (std::getline(*_ifs,line))
 		{
-			std::cout << "Parsing line " << nLine << std::endl;
+			std::cout << "\n\tParsing line " << nLine << " : ";
 			if (line.length() == 0)
 				std::cout << "Warning line " << nLine  << " :" << std::endl << "Useless NewLine" << std::endl;
 			else if (line[0] == '=')
@@ -48,7 +50,7 @@ void Parser::setFact(std::string const & fact, int nLine)
 		std::cerr << "Syntax error on line " << nLine << " :" << std::endl << "Setting a fact before creating it." << std::endl;
 		exit(1);
 	}
-	_rules[fact]->setStatus(TRUE);
+	_rules[fact.c_str()]->setStatus(TRUE);
 }
 
 void Parser::decomposeAndCreate(std::string const & line, int nLine)
@@ -59,8 +61,7 @@ void Parser::decomposeAndCreate(std::string const & line, int nLine)
 	}
 	std::string left = line.substr(0, line.find_first_of("="));
 	std::string right = line.substr(line.find_first_of("=") + 1);
-	std::cout << left << std::endl;
-	std::cout << right << std::endl;
+	std::cout << "Left : " << left << " Right : " << right << std::endl;
 
 
 
@@ -68,21 +69,103 @@ void Parser::decomposeAndCreate(std::string const & line, int nLine)
 		std::cerr << "Syntax error on line " << nLine << " :" << std::endl << "No \"+ or - on right operand\"" << std::endl;
 
 
-	size_t first = left.find_first_of("*+-");
 
-	if (first == std::string::npos)
+
+
+
+
+	// Traitement des opérandes droite
+	size_t rightStart = 0, rightEnd = 1;
+	while (rightEnd != std::string::npos)
 	{
-		// Solo fact
-	////	if (!
-	////		_rules[left]
+		rightEnd = right.find_first_of("*", rightStart);
+		if (rightEnd != right.length() - 1)
+		{
+			std::string currentLeft = right.substr(rightStart,rightEnd - rightStart);
+			std::cout << "Right : " << currentLeft << std::endl;
+
+			// Traitement des opérandes gauche
+			size_t leftStart = 0;
+			size_t leftEnd = left.find_first_of("*+-");
+
+			while (leftEnd != std::string::npos)
+			{
+				std::string currentSubLeft = left.substr(leftStart, leftEnd - leftStart);
+				std::cout << "SUB LEFT : " << currentSubLeft << std::endl;
+
+
+
+				std::cout << "TestCHAR : -" << left[leftEnd] << "-" << std::endl;
+				if (left[leftEnd] == '+')
+				{
+					if (!factExists(currentLeft))
+						_rules[currentLeft.c_str()] = new Fact(currentLeft);
+					if (!factExists(currentSubLeft))
+						_rules[currentSubLeft.c_str()] = new Fact(currentSubLeft);
+					static_cast<Fact*>(_rules[currentLeft.c_str()])->addDependence(_rules[currentSubLeft.c_str()]);
+					if (left.find_first_of("*+-", leftEnd + 1) == std::string::npos)
+					{
+						if (leftEnd + 2 == left.length())
+							leftEnd = left.length() - 1;
+					}
+				}
+				else if (left[leftEnd] == '*')
+				{
+					std::cout << "It's a AND" << std::endl;
+					size_t subLeftEnd = left.find_first_of("*+-", leftEnd + 1);
+					subLeftEnd = (subLeftEnd == std::string::npos ? left.length() - 1 : subLeftEnd);
+
+					std::string currentSubRight = left.substr(leftEnd + 1, subLeftEnd - leftEnd + 1);
+					if (currentSubRight.length() > 0)
+					{
+						std::cout << "-" << currentSubRight << "-" << std::endl;
+						if (!factExists(currentLeft))
+							_rules[currentLeft.c_str()] = new Fact(currentLeft);
+						if (!factExists(currentSubRight))
+							_rules[currentSubRight.c_str()] = new Fact(currentSubRight);
+						if (!factExists(currentSubLeft))
+							_rules[currentSubLeft.c_str()] = new Fact(currentSubLeft);
+						And* dep = new And(_rules[currentSubRight.c_str()], _rules[currentSubLeft.c_str()]);
+
+						static_cast<Fact*>(_rules[currentLeft.c_str()])->addDependence(dep);
+						leftEnd = left.find_first_of("*+-", subLeftEnd + 1);
+					}
+					else
+						std::cerr << "Syntax error on line " << nLine << " :" << std::endl << "WTF ?" << std::endl;
+					
+				}
+				else if (left[leftEnd] == '-')
+				{
+					std::cout << "It's a XOR" << std::endl;
+				}
+				else
+				{
+					std::string OrFact = left.substr(leftEnd);
+					if (!factExists(OrFact))
+						_rules[OrFact.c_str()] = new Fact(OrFact);
+					static_cast<Fact*>(_rules[currentLeft.c_str()])->addDependence(_rules[OrFact.c_str()]);
+					break;
+				}
+			}
+
+
+
+			rightStart = rightEnd + 1;
+		}
 	}
+
 
 }
 
 bool Parser::factExists(std::string const & fact)
 {
-	if (_rules.find(fact) == _rules.end())
+	if (_rules.find(fact.c_str()) == _rules.end())
 		return false;
 	return true;
 }
 
+
+std::map<std::string, IDependence*> const & Parser::getRules()
+{
+	return _rules;
+}
