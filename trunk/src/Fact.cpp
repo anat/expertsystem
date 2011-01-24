@@ -3,7 +3,7 @@
 Fact::Fact(std::string const & name)
 {
   _name = name;
-  _status = ST_UNDEF;
+  _status = Status::UNDEF;
 }
 
 std::string const & Fact::getName() const
@@ -11,25 +11,25 @@ std::string const & Fact::getName() const
   return _name;
 }
 
-int Fact::getStatus()
+TStatus Fact::getStatus()
 {
   std::list<IDependence *>::const_iterator it = _dependencies.begin();
   std::list<IDependence *>::const_iterator ite = _dependencies.end();
 
-  if (_status == ST_UNDEF)
+  if (_status == Status::UNDEF)
     {
-      while (it != ite)
-	{
-	  std::cout << _name.c_str() << ": " << (*it)->getName().c_str() << std::endl;
-	  if ((*it)->getStatus() == ST_TRUE)
-	    return ((_status = ST_TRUE));
-	  ++it;
-	}
+		  while (it != ite)
+		{
+		  std::cout << _name.c_str() << ": " << (*it)->getName().c_str() << std::endl;
+		  if ((*it)->getStatus() == Status::TRUE)
+			return ((_status = Status::TRUE));
+		  ++it;
+		}
     }
   return _status;
 }
 
-void Fact::setStatus(int status)
+void Fact::setStatus(TStatus status)
 {
   _status = status;
 }

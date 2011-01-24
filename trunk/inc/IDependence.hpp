@@ -3,10 +3,19 @@
 
 # include <iostream>
 
+
+typedef enum Status{
+	FALSE,
+	TRUE,
+	UNDEF
+} TStatus;
+
 class IDependence
 {
+	
 public:
-  virtual int getStatus() = 0;
+  virtual TStatus getStatus() = 0;
+  virtual void setStatus(TStatus status) = 0;
   virtual std::string const & getName() const = 0; // A virer
 };
 
