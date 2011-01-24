@@ -14,15 +14,24 @@ int main(int argc, char **argv)
 
 
 	std::map<std::string, IDependence*> rules = p.getRules();
-	//TStatus s = static_cast<Fact*>(rules["A"])->getStatus();
-	//if (s == UNDEF)
-	//	std::cout << static_cast<Fact*>(rules["A"])->getName().c_str() << " N'est pas définit" << std::endl;
-	//else if (s == TRUE)
-	//	std::cout << static_cast<Fact*>(rules["A"])->getName().c_str() << " est vrai" << std::endl;
-	//else if (s == FALSE)
-	//	std::cout << static_cast<Fact*>(rules["A"])->getName().c_str() << " est faux" << std::endl;
-	//else
-	//	std::cout << "COUILLE" << std::endl;
+
+
+	std::map<std::string, IDependence*>::iterator it = rules.begin();
+	std::map<std::string, IDependence*>::iterator end = rules.end();
+	while (it != end)
+	{
+		TStatus s = static_cast<Fact*>((it)->second)->getStatus();
+		if (s == UNDEF)
+			std::cout << (it)->first.c_str() << " N'est pas définit" << std::endl;
+		else if (s == TRUE)
+			std::cout << (it)->first.c_str() << " est vrai" << std::endl;
+		else if (s == FALSE)
+			std::cout << (it)->first.c_str() << " est faux" << std::endl;
+		else
+			std::cout << "COUILLE" << std::endl;
+		++it;
+	}
+
 
 
 
