@@ -7,14 +7,20 @@ And::And(IDependence *d1, IDependence *d2)
   _dep2 = d2;
 }
 
-int And::getStatus()
+TStatus And::getStatus()
 {
   std::cout << _dep1->getName().c_str() << " & " << _dep2->getName().c_str() << std::endl;
-  if (_dep1->getStatus() == ST_TRUE && _dep2->getStatus() == ST_TRUE)
+  if (_dep1->getStatus() == TRUE && _dep2->getStatus() == TRUE)
     {
       std::cout << "And::getStatus() = ST_TRUE" << std::endl;
-      return (ST_TRUE);
+      return (TRUE);
     }
   std::cout << "And::getStatus() = ST_FALSE" << std::endl;
-  return (ST_FALSE);
+  return (FALSE);
+}
+
+
+void And::setStatus(TStatus status)
+{
+	std::cout << "Erreur : Cannot set a AND !" << std::endl;
 }
