@@ -15,22 +15,19 @@ void Parser::run()
 		std::cout << "Usage : " << _param[0] << " rulesSource factToCheck [factToCheck] ..." << std::endl;
 	else
 	{
-		int i = 1;
+		int nLine = 1;
 		_ifs = new std::ifstream(_param[1]);
 		std::string line;
 		while (std::getline(*_ifs,line))
 		{
-			std::cout << "Parsing line " << i << std::endl;
-			if (line.length() > 1)
-			{
-				if (line[0] == '=')
-					setFact(line.substr(1), i);
-				else
-				{
-					decomposeAndCreate(line, i);
-				}
-			}
-			i++;
+			std::cout << "Parsing line " << nLine << std::endl;
+			if (line.length() == 0)
+				std::cout << "Warning line " << nLine  << " :" << std::endl << "Useless NewLine" << std::endl;
+			else if (line[0] == '=')
+				setFact(line.substr(1), nLine);
+			else
+				decomposeAndCreate(line, nLine);
+			nLine++;
 		}
 		std::cout << "End of file" << std::endl;
 
@@ -76,8 +73,8 @@ void Parser::decomposeAndCreate(std::string const & line, int nLine)
 	if (first == std::string::npos)
 	{
 		// Solo fact
-		if (!
-		_rules[left]
+	////	if (!
+	////		_rules[left]
 	}
 
 }
