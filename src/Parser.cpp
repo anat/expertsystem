@@ -27,11 +27,13 @@ void Parser::run()
 				std::cout << "Warning line " << nLine  << " :" << std::endl << "Useless NewLine" << std::endl;
 			else if (line[0] == '=')
 				setFact(line.substr(1), nLine);
+			else if (line.find_first_of("*-+") == std::string::npos && line.find_first_of("=") != std::string::npos)
+				simple(line, nLine);
 			else
 				decomposeAndCreate(line, nLine);
 			nLine++;
 		}
-		std::cout << "End of file" << std::endl;
+		std::cout << std::endl << std::endl << std::endl << std::endl << "End of file" << std::endl << std::endl << std::endl;
 
 	}
 
@@ -87,6 +89,7 @@ void Parser::decomposeAndCreate(std::string const & line, int nLine)
 			// Traitement des opérandes gauche
 			size_t leftStart = 0;
 			size_t leftEnd = left.find_first_of("*+-");
+
 
 			while (leftEnd != std::string::npos)
 			{
@@ -153,9 +156,22 @@ void Parser::decomposeAndCreate(std::string const & line, int nLine)
 			rightStart = rightEnd + 1;
 		}
 	}
+}
 
+void Parser::simple(std::string const & line, int nLine)
+{
+	std::string left = line.substr(0, line.find_first_of("="));
+	std::string right = line.substr(line.find_first_of("=") + 1);
+
+	if (!factExists(right))
+		_rules[right.c_str()] = new Fact(right);
+	if (!factExists(left))
+		_rules[left.c_str()] = new Fact(left);
+
+	static_cast<Fact*>(_rules[right.c_str()])->addDependence(_rules[left.c_str()]);
 
 }
+
 
 bool Parser::factExists(std::string const & fact)
 {

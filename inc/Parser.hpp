@@ -18,6 +18,7 @@ private:
   void setFact(std::string const & fact, int nLine);
   void decomposeAndCreate(std::string const & line, int nLine);
   bool factExists(std::string const & fact);
+  void simple(std::string const & line, int nLine);
 public:
   Parser(char** param, int count);
   void run();

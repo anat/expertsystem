@@ -7,7 +7,7 @@ int main(int argc, char **argv)
 {
 
 	char n1[] = "SuperProgram";
-	char n2[] = "./RS_2.txt";
+	char n2[] = "./RS_1.txt";
 	char n3[] = "A";
 	char *test[] = {n1, n2, n3};
 	Parser p(test, 3);
@@ -15,14 +15,17 @@ int main(int argc, char **argv)
 
 	std::map<std::string, IDependence*> rules = p.getRules();
 
-
+	// à debugguer pour que ca compile
+	//rules.find("A");
+	
 	std::map<std::string, IDependence*>::iterator it = rules.begin();
 	std::map<std::string, IDependence*>::iterator end = rules.end();
+
 	while (it != end)
 	{
 		TStatus s = static_cast<Fact*>((it)->second)->getStatus();
 		if (s == UNDEF)
-			std::cout << (it)->first.c_str() << " N'est pas définit" << std::endl;
+			std::cout << (it)->first.c_str() << " n'est pas définit" << std::endl;
 		else if (s == TRUE)
 			std::cout << (it)->first.c_str() << " est vrai" << std::endl;
 		else if (s == FALSE)
