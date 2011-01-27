@@ -11,6 +11,7 @@ private:
   IDependence *_dep2;
 
 public:
+	
   And(IDependence *d1, IDependence *d2);
   virtual TStatus getStatus();
   void setStatus(TStatus status);

@@ -20,6 +20,7 @@ public:
   virtual TStatus getStatus();
   void setStatus(TStatus status);
   void addDependence(IDependence *dependence);
+  void showStatus();
 };
 
 #endif
