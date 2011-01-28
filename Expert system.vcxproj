@@ -51,6 +51,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>.\inc\</AdditionalIncludeDirectories>
+      <TreatWChar_tAsBuiltInType>false</TreatWChar_tAsBuiltInType>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -79,12 +80,16 @@
     <ClInclude Include="inc\Fact.hpp" />
     <ClInclude Include="inc\IDependence.hpp" />
     <ClInclude Include="inc\Parser.hpp" />
+    <ClInclude Include="inc\Parserv2.hpp" />
+    <ClInclude Include="inc\Xor.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\And.cpp" />
     <ClCompile Include="src\Fact.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\Parser.cpp" />
+    <ClCompile Include="src\Parserv2.cpp" />
+    <ClCompile Include="src\Xor.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

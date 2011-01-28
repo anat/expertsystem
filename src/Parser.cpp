@@ -1,6 +1,7 @@
 #include "Parser.hpp"
 #include "Fact.hpp"
 #include "IDependence.hpp"
+#include "Xor.hpp"
 #include <iostream>
 #include <sstream>
 #include <list>
@@ -13,7 +14,7 @@ Parser::Parser(char** param, int count) : _param(param), _count(count)
 
 void Parser::run()
 {
-	if (_count <= 2)
+	if (_count == 3)
 		std::cout << "Usage : " << _param[0] << " rulesSource factToCheck [factToCheck] ..." << std::endl;
 	else
 	{
@@ -25,16 +26,15 @@ void Parser::run()
 			std::cout << "\n\tParsing line " << nLine << " : ";
 			if (line.length() == 0)
 				std::cout << "Warning line " << nLine  << " :" << std::endl << "Useless NewLine" << std::endl;
-			else if (line[0] == '=')
-				setFact(line.substr(1), nLine);
-			else if (line.find_first_of("*-+") == std::string::npos && line.find_first_of("=") != std::string::npos)
-				simple(line, nLine);
+			else if (line[0] == '=') 
+				setFact(line.substr(1), nLine);		// if it's a fact like =A
+			else if (line.find_first_of("*-+") == std::string::npos && line.find_first_of("=") != std::string::npos) 
+				simple(line, nLine);				// if we parse A=B for example
 			else
-				decomposeAndCreate(line, nLine);
+				decomposeAndCreate(line, nLine);	// all other case
 			nLine++;
 		}
 		std::cout << std::endl << std::endl << std::endl << std::endl << "End of file" << std::endl << std::endl << std::endl;
-
 	}
 
 }
@@ -60,23 +60,20 @@ void Parser::decomposeAndCreate(std::string const & line, int nLine)
 	if (line.find_first_of("=") == std::string::npos)
 	{
 		std::cerr << "Syntax error on line " << nLine << " :" << std::endl << "No \"=\"" << std::endl;
+		exit(0);
 	}
+
+	// Splitting left and right operand with =
 	std::string left = line.substr(0, line.find_first_of("="));
 	std::string right = line.substr(line.find_first_of("=") + 1);
-	std::cout << "Left : " << left << " Right : " << right << std::endl;
-
-
 
 	if (right.find_first_of("+-") != std::string::npos)
+	{
 		std::cerr << "Syntax error on line " << nLine << " :" << std::endl << "No \"+ or - on right operand\"" << std::endl;
+		exit(0);
+	}
 
-
-
-
-
-
-
-	// Traitement des opérandes droite
+	// working with right operand
 	size_t rightStart = 0, rightEnd = 1;
 	while (rightEnd != std::string::npos)
 	{
@@ -86,7 +83,7 @@ void Parser::decomposeAndCreate(std::string const & line, int nLine)
 			std::string currentLeft = right.substr(rightStart,rightEnd - rightStart);
 			std::cout << "Right : " << currentLeft << std::endl;
 
-			// Traitement des opérandes gauche
+			// working with left operand
 			size_t leftStart = 0;
 			size_t leftEnd = left.find_first_of("*+-");
 
@@ -112,7 +109,7 @@ void Parser::decomposeAndCreate(std::string const & line, int nLine)
 							leftEnd = left.length() - 1;
 					}
 				}
-				else if (left[leftEnd] == '*')
+				else if (left[leftEnd] == '*' || left[leftEnd] == '-')
 				{
 					std::cout << "It's a AND" << std::endl;
 					size_t subLeftEnd = left.find_first_of("*+-", leftEnd + 1);
@@ -128,18 +125,18 @@ void Parser::decomposeAndCreate(std::string const & line, int nLine)
 							_rules[currentSubRight.c_str()] = new Fact(currentSubRight);
 						if (!factExists(currentSubLeft))
 							_rules[currentSubLeft.c_str()] = new Fact(currentSubLeft);
-						And* dep = new And(_rules[currentSubRight.c_str()], _rules[currentSubLeft.c_str()]);
 
+
+						IDependence* dep;
+						if (left[leftEnd] == '*')
+							dep = new And(_rules[currentSubRight.c_str()], _rules[currentSubLeft.c_str()]);
+						else
+							dep = new Xor(_rules[currentSubRight.c_str()], _rules[currentSubLeft.c_str()]);
 						static_cast<Fact*>(_rules[currentLeft.c_str()])->addDependence(dep);
 						leftEnd = left.find_first_of("*+-", subLeftEnd + 1);
 					}
 					else
 						std::cerr << "Syntax error on line " << nLine << " :" << std::endl << "WTF ?" << std::endl;
-					
-				}
-				else if (left[leftEnd] == '-')
-				{
-					std::cout << "It's a XOR" << std::endl;
 				}
 				else
 				{
