@@ -15,8 +15,6 @@ public:
   And(IDependence *d1, IDependence *d2);
   virtual TStatus getStatus();
   void setStatus(TStatus status);
-  virtual std::string const & getName() const // A virer
-  { return (*(new std::string(""))); } // A virer
 };
 
 #endif
