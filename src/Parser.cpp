@@ -14,7 +14,7 @@ Parser::Parser(char** param, int count) : _param(param), _count(count)
 
 void Parser::run()
 {
-	if (_count == 3)
+	if (_count != 3)
 		std::cout << "Usage : " << _param[0] << " rulesSource factToCheck [factToCheck] ..." << std::endl;
 	else
 	{
