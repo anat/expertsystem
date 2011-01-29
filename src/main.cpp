@@ -8,10 +8,13 @@ int main(int argc, char **argv)
 {
 
 	char n1[] = "SuperProgram";
-	char n2[] = "./RS_2.txt";
-	char n3[] = "A";
+	char n2[] = "./RS_CUSTOM.txt";
+	char n3[] = "Je dois rouler a maximum 110Km/h";
 	char *test[] = {n1, n2, n3};
-	Parserv2 p(test, 3);
+	argv = test;
+	argc = 3;
+
+	Parserv2 p(argv, argc);
 
 
 	std::map<std::string, IDependence*> rules = p.getRules();
@@ -21,23 +24,23 @@ int main(int argc, char **argv)
 	std::map<std::string, IDependence*>::iterator it = rules.begin();
 	std::map<std::string, IDependence*>::iterator end = rules.end();
 
-	while (it != end)
-	{
-		TStatus s = static_cast<Fact*>((it)->second)->getStatus();
-		if (s == UNDEF)
-			std::cout << (it)->first.c_str() << " n'est pas définit" << std::endl;
-		else if (s == TRUE)
-			std::cout << (it)->first.c_str() << " est vrai" << std::endl;
-		else if (s == FALSE)
-			std::cout << (it)->first.c_str() << " est faux" << std::endl;
-		else
-			std::cout << "COUILLE" << std::endl;
-		++it;
-	}
+	int s = -1;
+	for (; it != end; ++it)
+		if (static_cast<Fact*>((it)->second)->getName() == argv[2])
+		{
+			s = static_cast<Fact*>((it)->second)->getStatus();
+			break;
+		}
 
 
-
-
+	if (s == UNDEF)
+		std::cout << (it)->first.c_str() << " n'est pas définit" << std::endl;
+	else if (s == TRUE)
+		std::cout << (it)->first.c_str() << " est vrai" << std::endl;
+	else if (s == FALSE)
+		std::cout << (it)->first.c_str() << " est faux" << std::endl;
+	else
+		std::cerr << "This fact doesn't exists" << std::endl;
 	/*
 	A*B*C+D
 	A*B+C*D
