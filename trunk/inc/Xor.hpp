@@ -3,16 +3,16 @@
 
 # include "IDependence.hpp"
 # include <iostream>
+# include <list>
 
 class Xor : public IDependence
 {
 private:
-  IDependence *_dep1;
-  IDependence *_dep2;
+	std::list<IDependence *> * _dependencies;
 
 public:
 	
-  Xor(IDependence *d1, IDependence *d2);
+  Xor(std::list<IDependence *> * dependencies);
   virtual TStatus getStatus();
   void setStatus(TStatus status);
 };
