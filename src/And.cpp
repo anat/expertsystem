@@ -19,7 +19,7 @@ TStatus And::getStatus()
 {
 	std::list<IDependence *>::iterator it = _dependencies->begin(), end = _dependencies->end();
 	for (; it != end ; ++it)
-		if (static_cast<And*>(*it)->getStatus() == FALSE)
+		if ((*it)->getStatus() == FALSE)
 			return FALSE;
 	return TRUE;
 }

@@ -9,7 +9,7 @@ int main(int argc, char **argv)
 
 	char n1[] = "SuperProgram";
 	char n2[] = "./RS_CUSTOM.txt";
-	char n3[] = "Je dois rouler a maximum 110Km/h";
+	char n3[] = "Je peux rouler a maximum 130Km/h";
 	char *test[] = {n1, n2, n3};
 	argv = test;
 	argc = 3;
