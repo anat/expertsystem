@@ -8,10 +8,10 @@ int main(int argc, char **argv)
 {
 
 	char n1[] = "SuperProgram";
-	char n2[] = "./RS_1.txt";
+	char n2[] = "./RS_2.txt";
 	char n3[] = "A";
 	char *test[] = {n1, n2, n3};
-	Parser p(test, 3);
+	Parserv2 p(test, 3);
 
 
 	std::map<std::string, IDependence*> rules = p.getRules();
