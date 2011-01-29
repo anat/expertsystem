@@ -27,6 +27,8 @@ void Parserv2::run()
 			std::cout << "\n\tParsing line " << nLine << " : ";
 			if (line.length() == 0)
 				std::cout << "Warning line " << nLine  << " :" << std::endl << "Useless NewLine" << std::endl;
+			else if (line.length() >= 2 && line.substr(0, 2) == "//")
+				; // commentaire
 			else if (line[0] == '=') 
 				setFact(line.substr(1), nLine);		// if it's a fact like =A
 			else
@@ -64,65 +66,59 @@ void Parserv2::decompose(std::string const & line, int nLine)
 		std::cerr << "Syntax error on line " << nLine << " :" << std::endl << "No \"+ or - on right operand\"" << std::endl;
 		exit(0);
 	}
-	std::list<std::list<IDependence*> * > * newLeft = parseLeft(left, nLine);
+	std::list<IDependence*> * newLeft = parseLeft(left, nLine);
 
 
-
-
-	// ADD DEPENDENCIES TO DEPENDENCIE
-	std::list<std::list<IDependence*> * >::iterator lit = newLeft->begin();
-	std::list<std::list<IDependence*> * >::iterator lend = newLeft->end();
-
-	//	LIST LOOK LIKE
-	//	IT->IT->AND
-	//	IT->IT->XOR
-	//	IT->IT->FACT/FACT/FACT/FACT
+	std::list<IDependence*>::iterator it = newLeft->begin();
+	std::list<IDependence*>::iterator end = newLeft->end();
 
 	std::list<IDependence*> finalList;
 
 	std::string prec = "";
-	while (lit != lend)
+
+	while (it != end)
 	{
-		std::cout << "-------------" <<  (*lit)->size() << std::endl;
-		IDependence* current = *((*lit)->begin());
+		IDependence* current = *(it);
+		std::cout << "------------- = " <<  getType(current) << std::endl;
 
 		if (this->getType(current) == "FACT")
 			finalList.push_back(current);
 		else
 		{
-			std::cout << this->getType(current) << std::endl;
-			std::list<std::list<IDependence*> * >::iterator negative(lit);
+			std::list<IDependence*>::iterator negative(it);
 			
-			while (lit != lend && (getType((*((*lit)->begin()))) == "AND" || getType((*((*lit)->begin()))) == "XOR"))
-				++lit;
+			while (it != end && (getType(*it) == std::string("AND") || getType(*it) == std::string("XOR")))
+				++it;
 
-			if (lit == negative)
+			if (it == negative)
 				std::cout << "AHAHAHHAA" << std::endl;
 
 			std::cout << "TEST" << std::endl;
-			std::list<std::list<IDependence*> * >::iterator start(negative);
-			++start;
+			std::list<IDependence*>::iterator start(negative);
+			//++start;
 			std::list<IDependence*> * dependence;
 			dependence = new std::list<IDependence*>();
-			while (start != lit)
+
+			//(*start)->getStatus
+			while (start != it)
 			{
-				dependence->push_back((*((*start)->begin())));
+				dependence->push_back(*start);
 				++start;
 			}
-			if (dependence->size() == 0)
+			if (dependence->size() == 0) // p'tete pas 0 =/
 				finalList.push_back(current);
 			else
 				finalList.push_back(new And(dependence));
-			--lit;
+			--it;
 		}
-		++lit;
+		++it;
 	}
 
 
 	std::list<Fact*>* newRight = parseRight(right, nLine);
 
 	std::list<Fact*>::iterator rit = newRight->begin();
-	std::list<Fact*>::iterator rend = newRight->begin();
+	std::list<Fact*>::iterator rend = newRight->end();
 	for (;rit != rend; ++rit)
 	{
 		std::list<IDependence*>::iterator it = finalList.begin();
@@ -142,65 +138,76 @@ void Parserv2::decompose(std::string const & line, int nLine)
 
 
 
-std::list < std::list<IDependence *> * > * Parserv2::parseLeft(std::string const & left, int nLine)
+std::list<IDependence *> *  Parserv2::parseLeft(std::string const & left, int nLine)
 {
-	std::list < std::list<IDependence *> * > * result = new std::list < std::list<IDependence *> * >();
+	std::list<IDependence *> * result = new std::list<IDependence *> ();
+
 	size_t start, end;
 
 	start = 0;
 	end = left.find_first_of("*+-");
 
-	std::list<IDependence *> * dependence = new std::list<IDependence *>();
-
 	if (end == std::string::npos)		// Case just one !
 	{
-		dependence->push_back(new Fact(left));
-		result->push_back(dependence);
+		result->push_back(createOrGetFact(left));
 		return result;
 	}
-
-
-	char prec, current;
-
+	char prec, current, next;
 	prec = left[end];
+	next = getNext(left, end);
 
-	/*			A+B*C-D			*/
-
+	std::list<IDependence *> * dependence = new std::list<IDependence *>();
 
 	while (end != std::string::npos)
 	{
-		std::cout << std::endl << "LOOP" << std::endl << std::endl;
 		current = left[end];
-		std::cout << "CLASSIC" << std::endl;
-		dependence->push_back(createOrGetFact(left.substr(start, end - start)));
+		next = getNext(left, end);
+		Fact * currentFact = createOrGetFact(left.substr(start, end - start));
 		if (current == '+')
 		{
-			result->push_back(dependence);
-			dependence = new std::list<IDependence *>();
+			if (prec == '*' || prec == '-')
+				dependence->push_back(currentFact);
+			if (prec == '*')
+				result->push_back(new And(dependence));
+			else if (prec == '-')
+				result->push_back(new Xor(dependence));
+			else
+				result->push_back(currentFact);
+
+			if ((prec == '*') || (prec == '-'))
+				dependence = new std::list<IDependence *>();
 			std::cout << "[" << left.substr(start, end - start) << "]" << "OR  :  CREATE NEW" << std::endl;
 		}
 		else if (current != prec && (current == '*' || current == '-') && (prec == '*' || prec == '-'))
 		{
-			IDependence* Dep;
+			if (prec == '*' || prec == '-')// && next != current)
+				dependence->push_back(currentFact);
 			if (prec == '*')
-				Dep = new And(dependence);
+				result->push_back(new And(dependence));
 			else if (prec == '-')
-				Dep = new Xor(dependence);
-			std::list<IDependence *> * listDep = new std::list<IDependence *>();
-			listDep->push_back(Dep);
-			result->push_back(listDep);
+				result->push_back(new Xor(dependence));
+			else
+				result->push_back(currentFact);
 			// Create the end
 
-			dependence = new std::list<IDependence *>();
+			if ((prec == '*') || (prec == '-'))// && next != current)
+				dependence = new std::list<IDependence *>();
 			std::cout << "[" << left.substr(start, end - start) << "]" << "CHANGE DEP  :  CREATE NEW" << std::endl;
-			//dependence->push_back(createOrGetFact(left.substr(start, end - start)));
+			//if (next != current || next == 0)
+				dependence->push_back(currentFact);
 		}
 		else if (current == prec)
 		{
+			if (prec == '*' || prec == '-')
+				dependence->push_back(currentFact);
 			std::cout << "[" << left.substr(start, end - start) << "]" << "SAME" << std::endl;
 		}
 		else
 		{
+			if (next == '+')
+				result->push_back(currentFact);
+			else
+				dependence->push_back(currentFact);
 			// DO NOTHING
 			std::cout << "[" << left.substr(start, end - start) << "]" << "OTHER CASE" << std::endl;
 		}
@@ -212,21 +219,19 @@ std::list < std::list<IDependence *> * > * Parserv2::parseLeft(std::string const
 	std::cout << std::endl << "END LOOP" << std::endl << std::endl << "start:" << start << std::endl << "end" << end << std::endl;
 	if (start < left.length())
 	{
-
-		dependence->push_back(createOrGetFact(left.substr(start)));
-		IDependence* Dep;
-		if (prec == '*' || prec == '-')
+		std::cout << "PREC EGAL " << prec << std::endl;
+		if (prec == '*')
 		{
-			if (prec == '*')
-				Dep = new And(dependence);
-			else if (prec == '-')
-				Dep = new Xor(dependence);
-			std::list<IDependence *> * listDep = new std::list<IDependence *>();
-			listDep->push_back(Dep);
-			result->push_back(listDep);
+			dependence->push_back(createOrGetFact(left.substr(start, end - start)));
+			result->push_back(new And(dependence));
+		}
+		else if (prec == '-')
+		{
+			dependence->push_back(createOrGetFact(left.substr(start, end - start)));
+			result->push_back(new Xor(dependence));
 		}
 		else
-			result->push_back(dependence);
+			result->push_back(createOrGetFact(left.substr(start, end - start)));
 	}
 	return result;
 }
@@ -323,4 +328,13 @@ char const * Parserv2::getType(IDependence * dependence)
 std::map<std::string, IDependence*> const & Parserv2::getRules()
 {
 	return _rules;
+}
+
+
+char Parserv2::getNext(std::string const & rule, int index)
+{
+	index = rule.find_first_of("+-*", index -1);
+	if (index == std::string::npos)
+		return 0;
+	return rule[index];
 }

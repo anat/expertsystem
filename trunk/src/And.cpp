@@ -3,14 +3,25 @@
 
 And::And(std::list<IDependence *> * dependencies) : _dependencies(dependencies)
 {
+	std::cout << "AND spawn with length : " << _dependencies->size() <<  std::endl;
+	//std::list<IDependence *>::iterator it = _dependencies->begin();
+	//std::list<IDependence *>::iterator end = _dependencies->end();
+	//std::cout << "And : ";
+	//while (it != end)
+	//{
+	//	std::cout <<  static_cast<Fact*>(*it)->getName().c_str() << ",";
+	//	++it;
+	//}
+	//std::cout << "." << std::endl;
 }
 
 TStatus And::getStatus()
 {
+	std::list<IDependence *>::iterator it = _dependencies->begin(), end = _dependencies->end();
+	for (; it != end ; ++it)
+		if (static_cast<And*>(*it)->getStatus() == FALSE)
+			return FALSE;
 	return TRUE;
-  //if (_dep1->getStatus() == TRUE && _dep2->getStatus() == TRUE)
-  //    return (TRUE);
-  //return (FALSE);
 }
 
 void And::setStatus(TStatus status)
