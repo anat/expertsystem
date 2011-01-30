@@ -18,9 +18,10 @@ And::And(std::list<IDependence *> * dependencies) : _dependencies(dependencies)
 TStatus And::getStatus()
 {
 	std::list<IDependence *>::iterator it = _dependencies->begin(), end = _dependencies->end();
-	for (; it != end ; ++it)
-		if ((*it)->getStatus() == UNDEF)
-			return UNDEF;
+
+	//for (; it != end ; ++it)
+	//if ((*it)->getStatus() == UNDEF)
+	//return UNDEF; // plus possible d'arrive la normalement ?
 	it = _dependencies->begin();
 	end = _dependencies->end();
 	for (; it != end ; ++it)
@@ -31,5 +32,5 @@ TStatus And::getStatus()
 
 void And::setStatus(TStatus status)
 {
-	std::cout << "Erreur : Cannot set a AND !" << std::endl;
+	std::cerr << "Erreur : Cannot set a AND !" << std::endl;
 }

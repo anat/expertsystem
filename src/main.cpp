@@ -7,12 +7,12 @@
 int main(int argc, char **argv)
 {
 
-	char n1[] = "SuperProgram";
-	char n2[] = "./RS_CUSTOM.txt";
-	char n3[] = "Je peux rouler a maximum 130Km/h";
-	char *test[] = {n1, n2, n3};
-	argv = test;
-	argc = 3;
+  //char n1[] = "SuperProgram";
+  //char n2[] = "./RS_CUSTOM.txt";
+  //char n3[] = "Je peux rouler a maximum 130Km/h";
+  //char *test[] = {n1, n2, n3};
+  //argv = test;
+  //argc = 3;
 
 	Parserv2 p(argv, argc);
 
