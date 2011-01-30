@@ -1,4 +1,4 @@
-#include "..\inc\Parserv2.hpp"
+#include "Parserv2.hpp"
 #include "Fact.hpp"
 #include "IDependence.hpp"
 #include "Xor.hpp"
@@ -7,6 +7,7 @@
 #include <list>
 #include <map>
 #include <list>
+#include <cstdlib>
 
 Parserv2::Parserv2(char** param, int count) : _param(param), _count(count)
 {
@@ -81,7 +82,7 @@ void Parserv2::decompose(std::string const & line, int nLine)
 		IDependence* current = *(it);
 		std::cout << "------------- = " <<  getType(current) << std::endl;
 
-		if (this->getType(current) == "FACT")
+		  if (this->getType(current) == std::string("FACT"))
 			finalList.push_back(current);
 		else
 		{
