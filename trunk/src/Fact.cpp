@@ -4,7 +4,7 @@ Fact::Fact(std::string const & name)
 {
 	_name = name;
 	std::cout << _name.c_str() << " a SPAWN !" << std::endl;
-	_status = Status::UNDEF;
+	_status = UNDEF;
 }
 
 std::string const & Fact::getName() const
@@ -17,13 +17,13 @@ TStatus Fact::getStatus()
 	std::list<IDependence *>::const_iterator it = _dependencies.begin();
 	std::list<IDependence *>::const_iterator ite = _dependencies.end();
 
-	if (_status == Status::UNDEF)
+	if (_status == UNDEF)
 	{
 		while (it != ite)
 		{
 			/* std::cout << _name.c_str() << ": " << (*it)->getName().c_str() << std::endl;*/
-			if ((*it)->getStatus() == Status::TRUE)
-				return ((_status = Status::TRUE));
+			if ((*it)->getStatus() == TRUE)
+				return ((_status = TRUE));
 			++it;
 		}
 	}

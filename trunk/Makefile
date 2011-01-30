@@ -22,8 +22,6 @@ CPPFLAGS	+=	-g3 -W -Wall -I $(INCLUDE)
 
 # Rules :
 
-$(OBJ)		:	$(SRC)
-
 all		:	$(NAME)
 
 $(NAME)		:	$(OBJ)
