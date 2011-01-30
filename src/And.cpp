@@ -19,6 +19,11 @@ TStatus And::getStatus()
 {
 	std::list<IDependence *>::iterator it = _dependencies->begin(), end = _dependencies->end();
 	for (; it != end ; ++it)
+		if ((*it)->getStatus() == UNDEF)
+			return UNDEF;
+	it = _dependencies->begin();
+	end = _dependencies->end();
+	for (; it != end ; ++it)
 		if ((*it)->getStatus() == FALSE)
 			return FALSE;
 	return TRUE;
