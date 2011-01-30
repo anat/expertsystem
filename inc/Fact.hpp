@@ -13,9 +13,10 @@ private:
   TStatus _status;
   std::string _name;
   std::list<IDependence *> _dependencies;
+  bool _interactiveMode;
 
 public:
-  Fact(std::string const & name);
+  Fact(std::string const & name, bool interactiveMode);
   virtual std::string const & getName() const;
   virtual TStatus getStatus();
   void setStatus(TStatus status);

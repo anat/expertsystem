@@ -1,10 +1,7 @@
 #include "Fact.hpp"
 
-Fact::Fact(std::string const & name)
+Fact::Fact(std::string const & name, bool interactiveMode) : _interactiveMode(interactiveMode), _name(name), _status(UNDEF)
 {
-	_name = name;
-	std::cout << _name.c_str() << " a SPAWN !" << std::endl;
-	_status = UNDEF;
 }
 
 std::string const & Fact::getName() const
@@ -16,24 +13,31 @@ TStatus Fact::getStatus()
 {
 	std::list<IDependence *>::const_iterator it = _dependencies.begin();
 	std::list<IDependence *>::const_iterator ite = _dependencies.end();
-	std::string tmp;
+	char * response = new char[128];
 
 	if (_status == UNDEF)
 	{
 		while (it != ite)
 		{
-			/* std::cout << _name.c_str() << ": " << (*it)->getName().c_str() << std::endl;*/
 			if ((*it)->getStatus() == TRUE)
 				return ((_status = TRUE));
 			++it;
 		}
-	    std::cout << this->getName() << " ?" << std::endl;
-	    std::cin >> tmp;
-	    if (tmp == std::string("yes"))
-	      return ((_status = TRUE));
-	    else
-	      return ((_status = FALSE));
-	  }
+
+		if (_interactiveMode)
+		{
+			input:
+			std::cout << this->getName().c_str() << " ? (\"yes\" or \"no\")" << std::endl;
+			std::cin.getline(response, 128);
+
+			if (std::string("yes").compare(response) == 0)
+				return ((_status = TRUE));
+			else if (std::string("no").compare(response) == 0)
+				return ((_status = FALSE));
+			else
+				goto input;
+		}
+	}
 	return _status;
 }
 

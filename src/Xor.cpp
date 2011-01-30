@@ -1,36 +1,44 @@
 #include "Xor.hpp"
 #include "Fact.hpp"
 
-Xor::Xor(std::list<IDependence *> * dependencies) : _dependencies(dependencies)
+Xor::Xor(std::list<IDependence *> * dependencies, bool interactiveMode) : _dependencies(dependencies), _interactiveMode(interactiveMode)
 {
-	std::cout << "XOR spawn with length : " << _dependencies->size() <<  std::endl;
-	//std::list<IDependence *>::iterator it = _dependencies->begin();
-	//std::list<IDependence *>::iterator end = _dependencies->end();
-	//std::cout << "Xor : ";
-	//while (it != end)
-	//{
-	//	std::cout <<  static_cast<Fact*>(*it)->getName().c_str() << ",";
-	//	++it;
-	//}
-	//std::cout << "." << std::endl;
 }
 
 TStatus Xor::getStatus()
 {
-	//std::list<IDependence *>::iterator it = _dependencies->begin(), end = _dependencies->end();
-	//while (it != end)
-	//{
-	//	Xor * prec = static_cast<Xor*>(*it);
-	//	++it;
-	//	if (
-	//	if (->getStatus() == FALSE)
-	//		return FALSE;
-	//	
-	//}
+	std::list<IDependence *>::iterator it = _dependencies->begin(), end = _dependencies->end();
+	if (!_interactiveMode)
+		for (; it != end ; ++it)
+			if ((*it)->getStatus() == UNDEF)
+				return UNDEF;
+	
+	bool allTrue = true, noTrue = true;
+
+	it = _dependencies->begin();
+	end = _dependencies->end();
+	for (; it != end ; ++it)
+	{
+		// CHECK 0 ^ 0 ^ 0
+		if ((*it)->getStatus() == TRUE)
+		{
+			// all value in set is not true
+			noTrue = false;
+			break;
+		}
+		// CHECK 1 ^ 1 ^ 1
+		else if ((*it)->getStatus() == FALSE)
+		{
+			allTrue = false;
+			break;
+		}
+	}
+	if (noTrue || allTrue)
+		return FALSE;
 	return TRUE;
 }
 
 void Xor::setStatus(TStatus status)
 {
-	std::cout << "Erreur : Cannot set a XOR !" << std::endl;
+	std::cerr << "Erreur : Cannot set a XOR !" << std::endl;
 }

@@ -1,27 +1,17 @@
 #include "And.hpp"
 #include "Fact.hpp"
 
-And::And(std::list<IDependence *> * dependencies) : _dependencies(dependencies)
+And::And(std::list<IDependence *> * dependencies, bool interactiveMode) : _dependencies(dependencies), _interactiveMode(interactiveMode)
 {
-	std::cout << "AND spawn with length : " << _dependencies->size() <<  std::endl;
-	//std::list<IDependence *>::iterator it = _dependencies->begin();
-	//std::list<IDependence *>::iterator end = _dependencies->end();
-	//std::cout << "And : ";
-	//while (it != end)
-	//{
-	//	std::cout <<  static_cast<Fact*>(*it)->getName().c_str() << ",";
-	//	++it;
-	//}
-	//std::cout << "." << std::endl;
 }
 
 TStatus And::getStatus()
 {
 	std::list<IDependence *>::iterator it = _dependencies->begin(), end = _dependencies->end();
-
-	//for (; it != end ; ++it)
-	//if ((*it)->getStatus() == UNDEF)
-	//return UNDEF; // plus possible d'arrive la normalement ?
+	if (_interactiveMode)
+		for (; it != end ; ++it)
+			if ((*it)->getStatus() == UNDEF)
+				return UNDEF;
 	it = _dependencies->begin();
 	end = _dependencies->end();
 	for (; it != end ; ++it)
