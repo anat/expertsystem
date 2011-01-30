@@ -16,6 +16,7 @@ TStatus Fact::getStatus()
 {
 	std::list<IDependence *>::const_iterator it = _dependencies.begin();
 	std::list<IDependence *>::const_iterator ite = _dependencies.end();
+	std::string tmp;
 
 	if (_status == UNDEF)
 	{
@@ -26,7 +27,13 @@ TStatus Fact::getStatus()
 				return ((_status = TRUE));
 			++it;
 		}
-	}
+	    std::cout << this->getName() << " ?" << std::endl;
+	    std::cin >> tmp;
+	    if (tmp == std::string("yes"))
+	      return ((_status = TRUE));
+	    else
+	      return ((_status = FALSE));
+	  }
 	return _status;
 }
 

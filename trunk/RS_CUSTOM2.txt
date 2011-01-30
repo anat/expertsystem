@@ -1,0 +1,12 @@
+Je suis a un carrefour*une voiture est a ma droite=j'accelere pour passer avant elle
+Je suis a un carrefour*une moto est a ma droite=j'accelere et lui fonce dedans
+Je suis a un carrefour*un camion est a ma droite=je lui laisse la priorite
+
+j'accelere et lui fonce dedans=un temoin sort son telephone
+
+un temoin sort son telephone*je suis arme=je le plante
+un temoin sort son telephone*je ne suis pas arme=je m'enfuis
+
+=Je suis a un carrefour
+=une moto est a ma droite
+=je ne suis pas arme
