@@ -6,7 +6,7 @@ NAME	=	expert_system
 
 SRC		=	./src/main.cpp		\
 			./src/Fact.cpp		\
-			./src/Parser.cpp	\
+			./src/Parserv2.cpp	\
 			./src/And.cpp		\
 			./src/Xor.cpp
 
