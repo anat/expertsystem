@@ -6,7 +6,7 @@ NAME	=	expert_system
 
 SRC		=	./src/main.cpp		\
 			./src/Fact.cpp		\
-			./src/Parserv2.cpp	\
+			./src/Parser.cpp	\
 			./src/And.cpp		\
 			./src/Xor.cpp
 
@@ -18,9 +18,11 @@ CC		=	g++
 
 INCLUDE		=	./inc
 
-CPPFLAGS	+=	-g3 -W -Wall -I $(INCLUDE)
+CPPFLAGS	+=	-O3 -W -Wall -I $(INCLUDE)
 
 # Rules :
+
+$(OBJ)		:	$(SRC)
 
 all		:	$(NAME)
 
