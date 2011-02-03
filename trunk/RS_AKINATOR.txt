@@ -1,0 +1,4 @@
+Je suis sur une autoroute*Il pleut=Je peux rouler a maximum 110Km/h
+Je suis sur une autoroute*Il pleut pas=Je peux rouler a maximum 130Km/h
+=Je suis sur une autoroute
+=Il pleut

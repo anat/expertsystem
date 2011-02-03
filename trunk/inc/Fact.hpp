@@ -9,7 +9,7 @@
 
 class Fact : public IDependence
 {
-private:
+protected:
   TStatus _status;
   std::string _name;
   std::list<IDependence *> _dependencies;
