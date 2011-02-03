@@ -271,11 +271,12 @@ bool Parser::factExists(std::string const & fact)
 
 IDependence * Parser::createOrGetFact(std::string const & fact)
 {
+	// WE CAN'T DO THAT WHAT THE FUCK
 	if (fact[0] == '!')
 	{
 		// WELL WELL It's a NOT
-			if (!factExists(fact.substr(1)))
-		this->_rules[fact.substr(1)] = new Not(fact.substr(1), _interactive);
+		if (!factExists(fact.substr(1)))
+			this->_rules[fact.substr(1)] = new Not(fact.substr(1), _interactive);
 	}
 	if (!factExists(fact))
 		this->_rules[fact] = new Fact(fact, _interactive);
