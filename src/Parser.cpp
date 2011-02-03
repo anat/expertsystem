@@ -168,7 +168,6 @@ std::list<IDependence *> *  Parser::parseLeft(std::string const & left, int nLin
 	next = getNext(left, end);
 
 	std::list<IDependence *> * dependence = new std::list<IDependence *>();
-	//std::list<IDependence *> * not = new std::list<IDependence *>();
 
 	while (end != std::string::npos)
 	{
@@ -271,10 +270,9 @@ bool Parser::factExists(std::string const & fact)
 
 IDependence * Parser::createOrGetFact(std::string const & fact)
 {
-	// WE CAN'T DO THAT WHAT THE FUCK
 	if (fact[0] == '!')
 	{
-		// WELL WELL It's a NOT
+		// NOT
 		if (!factExists(fact.substr(1)))
 			this->_rules[fact.substr(1)] = new Not(fact.substr(1), _interactive);
 	}

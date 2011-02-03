@@ -1,12 +1,15 @@
-Probleme d'ordinateur :
 
-L'affichage se gèle
-L'ordinateur met du temps à réagir
-Le disque dur est plein
-Le disque dur
 
-Probleme d'affichage
-Probleme 
-Le buzzer de ma carte mère BIP 3 fois
+Le cable reseau est débranche+Mon serveur DHCP ne m'as pas donne d'IP=Ma connexion internet ne marche plus
 
-Ma connexion internet ne marche plus
+Configurer mon routeur/switch/serveur DHCP=Mon serveur DHCP ne m'as pas donne d'IP
+La ram est defectueuse=3 BIP au demarrage*L'affichage se gèle
+La carte graphique est défectueuse=L'affichage se gèle
+J'ai du son=Les enceintes ne sont pas branchees*Mon systeme est mal configure
+Mon ordinateur fonctionne=J'ai du son
+
+Je n'ai plus de batterie*J'ai un ordinateur portable=Mon ordinateur ne démarre pas
+Le disque dur s'est debranche=L'ecran affiche Operating system not found
+Le disque dur est plein+Je suis sous windows=L'ordinateur met du temps à réagir
+J'ai un virus+Je suis sous windows=Mon ordinateur a un comportement etrange
+

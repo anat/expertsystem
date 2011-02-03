@@ -8,7 +8,7 @@ And::And(std::list<IDependence *> * dependencies, bool interactiveMode) : _depen
 TStatus And::getStatus()
 {
 	std::list<IDependence *>::iterator it = _dependencies->begin(), end = _dependencies->end();
-	if (_interactiveMode)
+	if (!_interactiveMode)
 		for (; it != end ; ++it)
 			if ((*it)->getStatus() == UNDEF)
 				return UNDEF;
