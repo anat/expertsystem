@@ -2,6 +2,7 @@
 #include "Fact.hpp"
 #include "IDependence.hpp"
 #include "Xor.hpp"
+#include "Not.hpp"
 #include <iostream>
 #include <sstream>
 #include <list>
@@ -115,6 +116,7 @@ void Parser::decompose(std::string const & line, int nLine)
 				dependence->push_back(*start);
 				++start;
 			}
+			// CREATE SUB DEPENDENCIES, NO "!" implementation
 			if (dependence->size() == 0)
 				finalList.push_back(current);
 			else
@@ -125,7 +127,7 @@ void Parser::decompose(std::string const & line, int nLine)
 	}
 
 
-	std::list<Fact*>* newRight = parseRight(right, nLine);
+	std::list<Fact*>* newRight = (std::list<Fact*>*)parseRight(right, nLine);
 
 	std::list<Fact*>::iterator rit = newRight->begin();
 	std::list<Fact*>::iterator rend = newRight->end();
@@ -166,12 +168,13 @@ std::list<IDependence *> *  Parser::parseLeft(std::string const & left, int nLin
 	next = getNext(left, end);
 
 	std::list<IDependence *> * dependence = new std::list<IDependence *>();
+	//std::list<IDependence *> * not = new std::list<IDependence *>();
 
 	while (end != std::string::npos)
 	{
 		current = left[end];
 		next = getNext(left, end);
-		Fact * currentFact = createOrGetFact(left.substr(start, end - start));
+		IDependence * currentFact = createOrGetFact(left.substr(start, end - start));
 		if (current == '+')
 		{
 			if (prec == '*' || prec == '-')
@@ -237,9 +240,9 @@ std::list<IDependence *> *  Parser::parseLeft(std::string const & left, int nLin
 }
 
 
-std::list<Fact*> * Parser::parseRight(std::string right, int nLine)
+std::list<IDependence*> * Parser::parseRight(std::string right, int nLine)
 {
-	std::list<Fact*> * result = new std::list<Fact*>();
+	std::list<IDependence*> * result = new std::list<IDependence*>();
 
 	size_t index = right.find_first_of("*");
 	if (index == std::string::npos)
@@ -266,8 +269,14 @@ bool Parser::factExists(std::string const & fact)
 	return true;
 }
 
-Fact * Parser::createOrGetFact(std::string const & fact)
+IDependence * Parser::createOrGetFact(std::string const & fact)
 {
+	if (fact[0] == '!')
+	{
+		// WELL WELL It's a NOT
+			if (!factExists(fact.substr(1)))
+		this->_rules[fact.substr(1)] = new Not(fact.substr(1), _interactive);
+	}
 	if (!factExists(fact))
 		this->_rules[fact] = new Fact(fact, _interactive);
 	return static_cast<Fact*>(_rules[fact]);

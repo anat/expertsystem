@@ -22,8 +22,8 @@ private:
 	bool factExists(std::string const & fact);
 	void decompose(std::string const & line, int nLine);
 	std::list < IDependence * > * parseLeft(std::string const & left, int nLine);
-	std::list < Fact * > * parseRight(std::string right, int nLine);
-	Fact * createOrGetFact(std::string const & fact);
+	std::list < IDependence * > * parseRight(std::string right, int nLine);
+	IDependence * createOrGetFact(std::string const & fact);
 	char const * getType(IDependence * dependence);
 	char getNext(std::string const & rule, int index);
 public:
