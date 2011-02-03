@@ -3,11 +3,6 @@
 
 # include "IDependence.hpp"
 # include "Fact.hpp"
-# include <iostream>
-# include <fstream>
-# include <map>
-# include <list>
-# include <string>
 
 class Not : public Fact
 {

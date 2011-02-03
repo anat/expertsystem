@@ -8,8 +8,8 @@ int main(int argc, char **argv)
 {
 
   char n1[] = "SuperProgram";
-  char n2[] = "./RS_CUSTOM.txt";
-  char n3[] = "Je peux rouler a maximum 130Km/h";
+  char n2[] = "./RS_CUSTOM3.txt";
+  char n3[] = "B";
   char n4[] = "1";
   char *test[] = {n1, n2, n3, n4};
   argv = test;
